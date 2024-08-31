@@ -42,3 +42,7 @@ The API will be available at `http://localhost:3000`.
 ### Versions
 - **npm**: 10.8.2
 - **node**: v20.16.0
+
+### .env file
+DATABASE_URL="postgresql://case_owner:OwTY29HuIXqJ@ep-black-salad-a5olkmy7.us-east-2.aws.neon.tech/case?sslmode=require"
+PORT=3000
