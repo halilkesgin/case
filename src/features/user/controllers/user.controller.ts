@@ -61,15 +61,15 @@ export class UserController {
     async borrowBook(req: Request, res: Response) {
         const userId = parseInt(req.params.userId, 10);
         const bookId = parseInt(req.params.bookId, 10);
-        await this.bookService.borrowBook(userId, bookId);
-        res.status(HttpStatus.OK).send({ message: "Book borrowed successfully" });
+        const message = await this.bookService.borrowBook(userId, bookId);
+        res.status(HttpStatus.OK).json({ message })
     };
 
     async returnBook(req: Request, res: Response) {
         const userId = parseInt(req.params.userId, 10);
         const bookId = parseInt(req.params.bookId, 10);
         const { score } = req.body;
-        await this.bookService.returnBook(userId, bookId, score);
-        res.status(HttpStatus.OK).send({ message: "Book returned successfully" });
+        const message = await this.bookService.returnBook(userId, bookId, score);
+        res.status(HttpStatus.OK).json({ message });
     };
 };

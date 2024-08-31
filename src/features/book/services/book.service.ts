@@ -29,33 +29,9 @@ export class BookService {
 
     async borrowBook(userId: number, bookId: number) {
         const user = await this.userRepository.findOneBy({ id: userId });
-        const book = await this.bookRepository.findOneBy({ id: bookId });
-    
-        if (!user) {
-            throw new AppError("User not found.", HttpStatus.NOT_FOUND);
-        }
-        
-        if (!book) {
-            throw new AppError("Book not found.", HttpStatus.NOT_FOUND);
-        }
-    
-        if (book.borrower) {
-            throw new AppError("Book is already borrowed.", HttpStatus.BAD_REQUEST);
-        }
-    
-        book.borrower = user;
-        book.borrowedBy = user; 
-        await this.bookRepository.save(book);
-        
-        return `Book ${book.id} borrowed by User ${user.id}`;
-
-    }
-
-    async returnBook(userId: number, bookId: number, score: number) {
-        const user = await this.userRepository.findOneBy({ id: userId });
         const book = await this.bookRepository.findOne({
             where: { id: bookId },
-            relations: ["borrower"], 
+            relations: ["borrower"]
         });
     
         if (!user) {
@@ -66,12 +42,30 @@ export class BookService {
             throw new AppError("Book not found.", HttpStatus.NOT_FOUND);
         }
     
-        if (!book.borrower || book.borrower.id !== userId) {
-            throw new AppError("Cannot return the book.", HttpStatus.BAD_REQUEST);
+        if (book.borrower) {
+            throw new AppError("Book is already borrowed.", HttpStatus.BAD_REQUEST);
+        }
+    
+        book.borrower = user;
+        await this.bookRepository.save(book);
+    
+        return `Book ${book.id} borrowed by User ${user.id}`;
+    }
+
+    async returnBook(userId: number, bookId: number, score: number) {
+        const user = await this.userRepository.findOneBy({ id: userId });
+        const book = await this.bookRepository.findOne({
+            where: { id: bookId },
+            relations: ["borrower"]
+        });
+    
+        if (!user || !book || book.borrower?.id !== userId) {
+            throw new AppError("Cannot return the book. Either the user or book does not exist, or the book was not borrowed by this user.", HttpStatus.BAD_REQUEST);
         }
     
         book.borrower = null;
-        book.averageScore = (book.averageScore + score) / 2;
+        book.averageScore = book.averageScore < 0 ? score : (book.averageScore + score) / 2;
+    
         await this.bookRepository.save(book);
     
         return `Book ${book.id} returned by User ${user.id} with score ${score}`;
