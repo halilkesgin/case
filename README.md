@@ -40,5 +40,5 @@ The API will be available at `http://localhost:3000`.
 - Custom error handling is implemented to return appropriate error messages and status codes for various scenarios, such as attempting to borrow a non-existent book or user.
 
 ### Versions
-npm: 10.8.2
-node: v20.16.0
+- **npm**: 10.8.2
+- **node**: v20.16.0
