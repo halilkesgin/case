@@ -7,9 +7,9 @@
 	  "strict": true,
 	  "esModuleInterop": true,
 	  "skipLibCheck": true,
-	  "forceConsistentCasingInFileNames": true,
 	  "emitDecoratorMetadata": true,
 	  "experimentalDecorators": true,
+	  "forceConsistentCasingInFileNames": true,
 	  "baseUrl": "./src",
 	  "paths": {
 		"*": ["types/*"]

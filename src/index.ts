@@ -4,11 +4,11 @@ import { PORT } from "./config/env";
 
 async function createDb() {
     try {
-        dataSource.initialize();
+        await dataSource.initialize();
         console.log("Database connection successfully.");
     } catch (error: any) {
-        console.log("Unable to connect to the database:");
-        console.log(error.message);
+        console.log("Database connection failed:");
+        console.error(error.message);
         process.exit(1);
     }
 }
@@ -16,7 +16,7 @@ async function createDb() {
 async function init() {
     await createDb();
 
-    app.listen(process.env.PORT, () => {
+    app.listen(PORT, () => {
         console.log(`Server is started on PORT: ${PORT}`);
     });
 }
