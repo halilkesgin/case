@@ -30,28 +30,24 @@ export class UserController {
     async getUserById(req: Request, res: Response) {
         const userId = parseInt(req.params.id, 10);
         const user = await this.userService.getUserById(userId);
-        
         if (!user) {
-            throw new AppError("User not found", HttpStatus.NOT_FOUND);
+            throw new AppError(`User with ID ${userId} not found.`, HttpStatus.NOT_FOUND);
         }
-
         const pastBooks = user.borrowedHistory?.map(book => ({
             name: book.name,
             score: book.averageScore,
         })) || [];
-
-        const presentBooks = user.borrowedBooks?.map(book => ({ name: book.name })) || [];
-
+        const presentBooks = user.borrowedBooks?.map(book => ({
+            name: book.name,
+        })) || [];
+    
         res.status(HttpStatus.OK).json({
             id: user.id,
             name: user.name,
-            books: { 
-                past: pastBooks, 
-                present: presentBooks 
-            }
+            books: { past: pastBooks, present: presentBooks }
         });
-    };
-
+    }
+    
     async createUser(req: Request, res: Response) {
         const { name } = req.body;
         const newUser = await this.userService.createUser(name);
