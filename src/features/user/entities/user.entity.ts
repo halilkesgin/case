@@ -16,5 +16,3 @@ export class User {
     @OneToMany(() => Book, (book) => book.borrowedBy)
     borrowedHistory!: Book[];
 }
-
-export default User;

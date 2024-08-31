@@ -7,7 +7,6 @@ async function createDb() {
         await dataSource.initialize();
         console.log("Database connection successfully.");
     } catch (error: any) {
-        console.log("Database connection failed:");
         console.error(error.message);
         process.exit(1);
     }

@@ -10,7 +10,13 @@ export class UserService {
     };
 
     async getUserById(id: number) {
-        return this.userRepository.findOneBy({ id })
+        return this.userRepository.findOne({
+            where: { id },
+            relations: [
+                "borrowedBooks", 
+                "borrowedHistory"
+            ] 
+        });
     };
 
     async createUser(name: string) {

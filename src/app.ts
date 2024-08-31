@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 
 import { ErrorMiddleware } from "./core/middlewares/error-middleware";
 import userRoutes from "./features/user/routes/user.route";
+import bookRoutes from "./features/book/routes/book.route";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/users", userRoutes);
+app.use("/books", bookRoutes);
 
 // Middlewares
 app.use(ErrorMiddleware);
